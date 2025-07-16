@@ -25,3 +25,4 @@ import { myFunction } from "./myModule.mjs";
 -> Use Case: Modern Node.js projects and browser compatibility.
 
 **_ But i'll use CJS (the old way) _**
+
