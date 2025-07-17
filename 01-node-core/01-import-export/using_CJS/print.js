@@ -34,9 +34,8 @@ like this there are also many many nodeJs built-In modules e.g. utils, path, os,
 e.g :--- 
 */
 const ut = require("util");
-// now by doing 'ut.' we can access many functions present inside 'utils' module 
+// now by doing 'ut.' we can access many functions present inside 'utils' module
 
 // Accessing json file
 const data = require("./userData.json");
-const { util } = require("undici-types");
 console.log(JSON.stringify(data));
