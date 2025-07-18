@@ -28,10 +28,10 @@ add.add2nums(3, 3);
 // Now what happened, this print.js file don't even know the exact location of mult.js, sum.js
 // so they are alomst hidden to user :), user will only get to know about index.js :)
 /*
-Like we created 'mathOperations' a module, imported it , 
+Like we created 'mathOperations' a module, imported it ,
 inside it there r many functions written, we can call them.
-like this there are also many many nodeJs built-In modules e.g. utils, path, os, https etc.... many more, inside them, functions +nt there 
-e.g :--- 
+like this there are also many many nodeJs built-In modules e.g. utils, path, os, https etc.... many more, inside them, functions +nt there
+e.g :---
 */
 const ut = require("util");
 // now by doing 'ut.' we can access many functions present inside 'utils' module
