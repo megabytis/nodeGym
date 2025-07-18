@@ -1,3 +1,7 @@
+###  ############################################# ###
+***  Imp file to become a good nodeJS developer 👨‍💻 ***
+###  ############################################# ###
+
 - all the codes of MODULE, are wrapped inside a function (IIFE i.e. immediately invoked function expression)
   espeially, when we use "require('./')", nd whatever we imports, immediately in backend all those imported stuffs r being kept in IIFE
 
@@ -88,5 +92,6 @@ so ,whatever we do like import / export anything all r being passed in IIFE
    after loading, all imported variables/functions are being wrapped inside IIFE
 
 4. Evaluation
+   module.exports() happen
 
 5. Caching
