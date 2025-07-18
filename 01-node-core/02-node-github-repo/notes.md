@@ -91,7 +91,18 @@ so ,whatever we do like import / export anything all r being passed in IIFE
 3. **_ wraps inside IIFE _**
    after loading, all imported variables/functions are being wrapped inside IIFE
 
-4. Evaluation
+4. **_ Evaluation _**
    module.exports() happen
 
-5. Caching
+5. **_ Caching _**
+    When you require() a module, Node.js caches/saves it in memory. Subsequent/further require() of the same module, return the same pre-saved instance instead of reloading/reevaluating the file.
+    e.g. :---
+    // math.js
+    console.log('This runs ONLY ONCE!');
+    module.exports = { sum: (a, b) => a + b };
+
+    // app.js
+    const math1 = require('./math');  // Logs "This runs ONLY ONCE!"
+    const math2 = require('./math');  // NO LOG - uses cached version
+
+    console.log(math1 === math2);    // true (identical object in memory)
