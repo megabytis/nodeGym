@@ -42,6 +42,14 @@ so here we have an asynchronous operation where each person can place their orde
 
 -> just after serving coke to person-1, immediately noodle's is gonna be prepared, after person-2 goes to waiting area, pizza will be prepared, after person-3 goes to waiting area, fries will be prepared after person-4 goes to waiting area, E.F.Noodles will be prepared after person-5 goes to waiting area, and coke will be served to person-6 instantly.
 
--> so, let's calculate, from starting after 5 minutes person-2's noodles will be ready, then again 5 minutes later both 5th person's noodles(5minute after person-2's noodles) & 3rd person's pizza(10minute after person-2's noodles) will be ready, and then 5 minutes later 4th person's fries(15minute after person-2's noodles or 5minute after person-5's noodles / 5 minute after person-3's pizza) will be ready.
+-> so, let's calculate, from starting after 5 minutes person-2's noodles will be ready, then again 5 minutes later both 5th person's noodles(5minute after person-2's noodles) & 3rd person's pizza(10minute after person-2's noodles) will be ready together, and then 5 minutes later 4th person's fries(15minute after person-2's noodles or 5minute after person-5's noodles / 5 minute after person-3's pizza) will be ready.
 
 => Total time till 6th person: 15 minutes(vs 35 mins in sync!)
+
+**_ Why Async Wins _**
+
+✅ Faster overall throughput
+✅ Better user experience (no frozen apps)
+✅ Scalable for I/O-heavy tasks (APIs, databases)
+
+    "Use async for anything that involves waiting (files, networks, DBs). Sync only for quick startup tasks."
