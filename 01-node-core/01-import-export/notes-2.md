@@ -24,8 +24,6 @@ we already knew that, IIFE is such type of function, which is wrapped inside '()
 - secondly, IIFE keeps every variales safe/private inside it,
   i.e. those variables won't interfere with any other variables outside
 
-- ffgfgf
-
 **_ Qn. How r variables & functions PRIVATE in different modules _**
 Ans:- due to require statement & IIFE i.e. Node's wrapper function
 
@@ -95,8 +93,9 @@ so ,whatever we do like import / export anything all r being passed in IIFE
    module.exports() happen
 
 5. **_ Caching _**
-    When you require() a module, Node.js caches/saves it in memory. Subsequent/further require() of the same module, return the same pre-saved instance instead of reloading/reevaluating the file.
+    When you require() a module, Node.js caches/saves it in memory. Subsequent/further require() of the same module, return the same pre-saved instance, instead of reloading/reevaluating the file.
     e.g. :---
+    ```js
     // math.js
     console.log('This runs ONLY ONCE!');
     module.exports = { sum: (a, b) => a + b };
@@ -106,3 +105,4 @@ so ,whatever we do like import / export anything all r being passed in IIFE
     const math2 = require('./math');  // NO LOG - uses cached version
 
     console.log(math1 === math2);    // true (identical object in memory)
+    ```
