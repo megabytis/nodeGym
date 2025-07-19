@@ -88,6 +88,7 @@ so ,whatever we do like import / export anything all r being passed in IIFE
 
 3. **_ wraps inside IIFE _**
    after loading, all imported variables/functions are being wrapped inside IIFE
+   -> so, this is the 'compile' step
 
 4. **_ Evaluation _**
    module.exports() happen
