@@ -262,6 +262,8 @@ JS access ☝️ above stuffs via: "libuv" (the SUPERHERO), which is given by no
 │  codes in js    │---goes to----> │    libuv    │---access---> stuffs in OS
 └─────────────────┘                └─────────────┘
 
+==> 'libuv', written in C, has made Async I/O simple
+
 **_ Node.js Architecture Diagram _**
 ┌───────────────────────────────┐
 │           JavaScript          │  <-- Your Code (e.g., `fs.readFile()`)
