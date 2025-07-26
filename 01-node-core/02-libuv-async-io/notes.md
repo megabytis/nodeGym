@@ -266,13 +266,13 @@ codes(API calls, readFiles, timeOut etc...) in js -----V8 sends them to----> lib
 
 **_ Node.js Architecture Diagram _**
 ┌───────────────────────────────┐
-│ JavaScript │ <-- Your Code (e.g., `fs.readFile()`)
+│           JavaScript          │ <-- Your Code (e.g., `fs.readFile()`)
 ├───────────────┬───────────────┤
-│ V8 Engine │ C++ Bindings│ <-- Converts JS to native OS calls
+│ V8 Engine     │ C++ Bindings  │ <-- Converts JS to native OS calls
 ├───────────────┴───────────────┤
-│ libuv │ <-- Handles async I/O & event loop
+│             libuv             │ <-- Handles async I/O & event loop
 ├───────────────────────────────┤
-│ Operating System │ <-- Files, Network, Processes, etc.
+│        Operating System       │ <-- Files, Network, Processes, etc.
 └───────────────────────────────┘
 
 👆 here,
