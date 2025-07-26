@@ -176,20 +176,6 @@ setTimeout(() => {
 }, 5000);
 ```
 
-**_ Event Loop Workflow _**
-
-    Callback Queue:
-
-        Receives completed async operations
-
-    Event Loop:
-
-        Moves callbacks to Call Stack when empty
-
-    Worker Threads:
-
-        Handle I/O operations (libuv)
-
 **_ Step-by-Step Process _**
 
 1.  Async Function Call
@@ -220,6 +206,20 @@ setTimeout(() => {
         Adds callback to Callback Queue.
 
         Event Loop checks if Call Stack is empty.
+
+            **_ Event Loop Workflow _**
+
+                Callback Queue:
+
+                    Receives completed async operations by libuv
+
+                Event Loop:
+
+                    Moves callbacks to Call Stack when empty
+
+                Worker Threads:
+
+                    Handle I/O operations (libuv)
 
 4.  Callback Execution
 
@@ -266,13 +266,13 @@ codes(API calls, readFiles, timeOut etc...) in js -----V8 sends them to----> lib
 
 **_ Node.js Architecture Diagram _**
 ┌───────────────────────────────┐
-│           JavaScript          │ <-- Your Code (e.g., `fs.readFile()`)
+│ JavaScript │ <-- Your Code (e.g., `fs.readFile()`)
 ├───────────────┬───────────────┤
-│ V8 Engine     │ C++ Bindings  │ <-- Converts JS to native OS calls
+│ V8 Engine │ C++ Bindings │ <-- Converts JS to native OS calls
 ├───────────────┴───────────────┤
-│             libuv             │ <-- Handles async I/O & event loop
+│ libuv │ <-- Handles async I/O & event loop
 ├───────────────────────────────┤
-│        Operating System       │ <-- Files, Network, Processes, etc.
+│ Operating System │ <-- Files, Network, Processes, etc.
 └───────────────────────────────┘
 
 👆 here,
