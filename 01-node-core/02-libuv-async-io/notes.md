@@ -299,3 +299,5 @@ Key Components:
     OS Layer
 
         Raw access to files, sockets, processes, etc.
+
+-> so, js is shynchonous but nodeJs is asynchronous (i.e. non-blocking) cuz, libuv handles all async processes, it doesn't block js works
