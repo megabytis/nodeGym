@@ -31,7 +31,18 @@ so, have to go to the same directory where the file exists in termial :)
 //     console.log("File data : ", data);
 //   }
 // });
-// this will work, doesn't matter by staying in which directory u r running this file via node , it will work 
+// this will work, doesn't matter by staying in which directory u r running this file via node , it will work
+
+// Ther is also an 'sync' function for reading file
+fs.readFileSync("./useMe.txt", "utf8", function () {
+  // ........
+});
+/*
+this does the same work like readFile(), but synchronously, 
+i.e.
+-> It uses node:fs module, so js will send this function also to libuv
+-> but after gping to libuv, still this will block the js file furthur execution process :)
+*/
 
 setTimeout(() => {
   console.log("Wait here for 5 seconds");
