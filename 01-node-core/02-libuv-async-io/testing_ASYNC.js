@@ -8,7 +8,7 @@ function mult(x, y) {
 
 const https = require("https");
 https.get("https://api.dictionaryapi.dev/api/v2/entries/en/hello", (res) => {
-  // console.log(res);
+  console.log(res);
 });
 
 const fs = require("fs"); // or require("node:fs")
@@ -33,10 +33,11 @@ so, have to go to the same directory where the file exists in termial :)
 // });
 // this will work, doesn't matter by staying in which directory u r running this file via node , it will work
 
-// Ther is also an 'sync' function for reading file
+/* Ther is also an 'sync' function for reading file
 fs.readFileSync("./useMe.txt", "utf8", function () {
   // ........
 });
+*/
 /*
 this does the same work like readFile(), but synchronously,
 i.e.
@@ -65,3 +66,4 @@ crypto.pbkdf2("password", "salt", 100000, 20, "sha512", (err, key) => {
     console.log(key);
   }
 });
+// it has also "sync" version, which will  block the js execution, i.e. pbkdf2Sync()
