@@ -42,6 +42,9 @@ this does the same work like readFile(), but synchronously,
 i.e.
 -> It uses node:fs module, so js will send this function also to libuv
 -> but after gping to libuv, still this will block the js file furthur execution process :)
+
+Like this 'readzFileSync()' , ther er many more functions in node modules, where there is a non-sync and a sync version func of it 
+-> in any function if at the end there is written "sync", i.e. it will also be sent to libuv by js but still it will block the main code, i.e. perform synchronous task 
 */
 
 setTimeout(() => {
