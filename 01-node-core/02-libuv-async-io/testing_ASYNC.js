@@ -72,4 +72,17 @@ crypto.pbkdf2("password", "salt", 100000, 20, "sha512", (err, key) => {
 setTimeout(() => {
   console.log("It will be executed immediately");
 }, 0);
-// here during line by line execution, when js compiler came here it will be EXECUTED IMMEDIATELY, cuz timer is set to 0sec
+/*
+⚠️⚠️⚠️ V.V. IMPORTANT ⚠️⚠️⚠️
+-> here during line by line execution, when js compiler came here it will also be sent to libuv
+-> don't think that it's timer is 0 sec, so it will be executed immediately, NOPE ❌ 🤣
+-> ASYNC function, means will be sent to libuv, THIS IS FIXED .....
+-> after this there is an IIFE function written below👇, this will be pushed to call stack, then will be executed immediately
+-> then when there is no more code left , CALL STACK FINALLY WILL BE FREE i.e. once the call stack of main thread will be FREE
+-> after that this setTimeout : 0 will be pushed to call stack, then will be executed
+*/
+
+console.log(99 + 88);
+(function () {
+  console.log("Hi hello thsi is the last IIFE function");
+})();
