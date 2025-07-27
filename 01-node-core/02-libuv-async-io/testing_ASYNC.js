@@ -67,3 +67,9 @@ crypto.pbkdf2("password", "salt", 100000, 20, "sha512", (err, key) => {
   }
 });
 // it has also "sync" version, which will  block the js execution, i.e. pbkdf2Sync()
+
+// setTimeout : 0
+setTimeout(() => {
+  console.log("It will be executed immediately");
+}, 0);
+// here during line by line execution, when js compiler came here it will be EXECUTED IMMEDIATELY, cuz timer is set to 0sec
