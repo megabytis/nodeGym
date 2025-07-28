@@ -1,12 +1,18 @@
-V8 is Google's open-source JavaScript and WebAssembly engine, written in C++. It's the engine that powers:
+# 🔧 V8 JavaScript Engine – Architecture & Internals
 
-    - Google Chrome browser
-    - Node.js
-    - Deno
-    - Electron applications
-    - Many other JavaScript runtimes
+**V8** is Google’s open-source **JavaScript and WebAssembly engine**, written in **C++**. It powers:
 
-Architecture Overview
+- 🧭 Google Chrome
+- 🟦 Node.js
+- 🦕 Deno
+- 🖥️ Electron apps
+- ⚙️ Many other JavaScript runtimes
+
+---
+
+## 🧠 V8 Architecture Overview
+
+```
 ┌─────────────────────────────────────────┐
 │              JavaScript                 │
 └─────────────────┬───────────────────────┘
@@ -28,61 +34,82 @@ Architecture Overview
 ┌─────────────────▼───────────────────────┐
 │            Machine Code                 │
 └─────────────────────────────────────────┘
+```
 
-![V8 Engine Phases](./images/v8_phases.png)
+> ![V8 Phases Diagram](./images/v8_phases.png)
 
-#########################
-**_ 1. Parsing Phase _**
-#########################
+---
 
-Steps:
+## 1️⃣ Parsing Phase
 
-### (i) Lexical Analysis a.k.a. Tokenization : 
+### 🧩 (i) Lexical Analysis (Tokenization)
 
-    - "scanner/Lexer" converts/breaks down the entire code into TOKENS
-    - Tokens can be every single parts of a code 
-        e.g. let a = 90 ;
-        here "let", "a", "=", "90", ";", everything are Tokens
+- The **Scanner/Lexer** breaks code into **tokens**.
+- A **token** is the smallest individual unit (e.g. keywords, identifiers, operators).
 
-### (ii) Syntax Analysis a.k.a Parsing :
+Example:
 
-    - A "Parser" creates Abstract Syntax Tree (AST) using those created Tokens
-    - we can see the AST using [https://astexplorer.net/]
+```js
+let a = 90;
+```
 
-**_ 2. Interpretation Phase _**
+Tokens: `"let"`, `"a"`, `"="`, `"90"`, `";"`
 
-- V8's interpreter name: "IGNITION Interpreter"
+---
 
-# Steps:
+### 🧱 (ii) Syntax Analysis (Parsing)
 
-    - Ignition interpreter converts js code to 'Byte Code'
-    - ByteCode is now ready for execution
+- A **Parser** builds an **Abstract Syntax Tree (AST)** using tokens.
+- You can visualize an AST here: [AST Explorer](https://astexplorer.net/)
 
-**_ 3. Optimization Phase _**
+---
 
-- V8's optimizing compiler name: "TurboFan"
+## 2️⃣ Interpretation Phase
 
-# Steps:
+### 🎛 Ignition Interpreter
 
-    - After code interpreted, whatever from the code is reused / being used again and again / needs Optimization (k.a. HOT codes :), will be sent to TurboFan
-    - this process is k.a. OPTIMIZATION
-    - then TurboFan generates highly Otimized Machine Code
-    - Now the Optimized machine code is again ready for Execution
-    
-e.g.
+- Converts JS code to **Bytecode**.
+- Bytecode is ready for **execution by V8 runtime**.
+
+---
+
+## 3️⃣ Optimization Phase
+
+### 🚀 TurboFan Optimizing Compiler
+
+- Identifies **hot code** (frequently executed functions or blocks).
+- Optimizes the code and compiles it to **highly efficient machine code**.
+
+Example of "hot code" optimization:
+
 ```js
 // Hot function that gets optimized
 function add(a, b) {
-return a + b;
+  return a + b;
 }
 
-// Called many times → TurboFan optimizes it
+// Called many times → TurboFan kicks in
 for (let i = 0; i < 100000; i++) {
-add(i, i + 1);
+  add(i, i + 1);
 }
 ```
 
+---
 
+> ![V8 Architecture Diagram](./images/v8_arc.png)
 
+---
 
-![V8 Engine](./images/v8_arc.png)
+## 📌 Summary
+
+| Phase                | Engine/Component | Purpose                           |
+| -------------------- | ---------------- | --------------------------------- |
+| **Lexical Analysis** | Scanner          | Breaks code into tokens           |
+| **Syntax Analysis**  | Parser           | Builds the AST                    |
+| **Interpretation**   | Ignition         | Converts code to bytecode         |
+| **Optimization**     | TurboFan         | Compiles hot code to machine code |
+| **Execution**        | Runtime          | Manages memory, GC, and built-ins |
+
+---
+
+> ✨ Understanding V8 internals helps to write performant JS code and debug runtime behavior effectively.
