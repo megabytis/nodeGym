@@ -28,3 +28,23 @@ Architecture Overview
 ┌─────────────────▼───────────────────────┐
 │            Machine Code                 │
 └─────────────────────────────────────────┘
+
+#### Compilation Pipeline
+
+**_ 1. Parsing Phase _**
+
+Steps:
+
+(i) Lexical Analysis a.k.a. Tokenization : 
+    - "scanner/Lexer" converts/breaks down the entire code into TOKENS
+    - Tokens can be every single parts of a code 
+        e.g. let a = 90 ;
+        here "let", "a", "=", "90", ";", everything are Tokens
+
+(ii) Syntax Analysis a.k.a Parsing :
+    - A "Parser" creates Abstract Syntax Tree (AST) using those created Tokens
+    - we can see the AST using [https://astexplorer.net/]
+
+**_ 2. Interpretation/Ignition Phase _**
+
+Steps:
