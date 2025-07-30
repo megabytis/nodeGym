@@ -94,6 +94,32 @@ for (let i = 0; i < 100000; i++) {
 }
 ```
 
+## Deoptimization in V8 (xTraaaa)
+
+-> V8 also has a sophisticated deoptimization system that kicks in when its assumptions are proven wrong
+-> Deoptimization is the process where V8 downgrades optimized code back to interpreted bytecode when its assumptions about the code's behavior are violated.
+
+How It Works :
+
+```js
+// Initially, V8 assumes numbers based on early calls
+function add(a, b) {
+  return a + b;
+}
+
+// TurboFan optimizes for numbers
+add(5, 10); // Numbers - optimization kicks in
+add(15, 25); // Numbers - stays optimized
+add(30, 40); // Numbers - stays optimized
+
+// DEOPTIMIZATION TRIGGERED HERE!
+add("hello", "world"); // Strings - assumptions broken!
+```
+
+-> what happened here is, intially i was passing numbers while calling add(), so turbofan compiler made an assumption that, only Numbers can be passed to add() function, so optimized it
+-> but, when i passed two strings instead of numbers, 'de-optimization' triggered there
+-> Deoptimization is expensive - both immediate and long-term costs
+
 ---
 
 > ![V8 Architecture Diagram](./images/v8_arc.png)
