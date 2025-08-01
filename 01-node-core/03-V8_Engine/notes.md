@@ -138,4 +138,53 @@ add("hello", "world"); // Strings - assumptions broken!
 
 ---
 
+--> The whole above process of interpretation & compilation is known as JIT(just in time) Compilation
+
+## 4️⃣ Memory Management
+
+**_ Heap Structur _**
+
+```text
+┌─────────────────────────────────────┐
+│              New Space              │
+│  (Young Generation)                 │
+│  • Nursery (newly allocated)        │
+│  • Intermediate                     │
+├─────────────────────────────────────┤
+│              Old Space              │
+│  (Old Generation)                   │
+│  • Large Object Space               │
+│  • Map Space                        │
+│  • Code Space                       │
+└─────────────────────────────────────┘
+```
+
+## 5️⃣ Garbage Collection
+
+V8 uses a generational garbage collector:
+
+**_ Scavenger (Minor GC) _**
+
+- Collects new space
+- Uses Cheney's algorithm (semi-space copying)
+- Very fast - typically < 1ms
+
+**_ Mark-Sweep-Compact (Major GC) _**
+
+- Collects old space
+- Mark phase: finds reachable objects
+- Sweep phase: reclaims unreachable objects
+- Compact phase: reduces fragmentation
+
+```js
+// Example of object promotion
+let obj = {}; // Allocated in new space
+
+// After surviving several minor GCs
+// Object gets promoted to old space
+setTimeout(() => {
+  console.log(obj); // Still referenced, so survives GC
+}, 1000);
+```
+
 > ✨ Understanding V8 internals helps to write performant JS code and debug runtime behavior effectively.
