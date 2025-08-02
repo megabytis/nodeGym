@@ -167,3 +167,7 @@ undefined            // if res?.secret doesn't exist in the response
 > _Note: Order of `fs.readFile`, `setTimeout`, and `https.get` output may vary slightly depending on system performance and response time._
 
 ---
+
+# Event-Loop in detail (with diagram)
+
+[event-loop](./event_loop.png)
