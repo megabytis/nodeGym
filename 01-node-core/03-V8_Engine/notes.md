@@ -161,6 +161,8 @@ add("hello", "world"); // Strings - assumptions broken!
 
 ## 5️⃣ Garbage Collection
 
+### some garbage collectors :- orinoco, oilpan, scavenger etc...
+
 V8 uses a generational garbage collector:
 
 **_ Scavenger (Minor GC) _**
