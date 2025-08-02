@@ -314,6 +314,8 @@ Key Components:
 - **OS Layer**  
   Raw access to files, sockets, processes, etc.
 
+[Diagram](./nodeJs.png)
+
 ---
 
 -> so, JS is synchronous but Node.js is asynchronous (i.e., non-blocking) cuz, **libuv** handles all async processes — it doesn't block JS execution.
