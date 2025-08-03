@@ -168,6 +168,108 @@ undefined            // if res?.secret doesn't exist in the response
 
 ---
 
-# Event-Loop in detail (with diagram)
+# 🌀 Node.js Event Loop - Detailed Explanation
 
 [event-loop](./event_loop.png)
+
+The Node.js **Event Loop** is the core mechanism that handles **asynchronous operations** like `setTimeout`, `I/O tasks`, and `Promises`. It allows Node.js to be **non-blocking** and single-threaded while still handling many operations concurrently.
+
+---
+
+## 🔁 Overview
+
+The event loop works in **phases**, where each phase has its own **callback queue**. The loop runs **continuously** — checking queues, executing callbacks, and moving to the next phase.
+
+⚠️⚠️⚠️IMP⚠️⚠️⚠️
+previously, we knew that inside libuv, there is an eventLoop, an callback queue & an thread pool, but here it's clear that EVERY PHASE OF EVENT-LOOP has it's special CALLBACK QUEUE :)
+
+---
+
+## 🔄 Phases of the Event Loop
+
+The loop has **six major phases**, shown as a cycle in the diagram:
+
+### 1. ⏲️ **Timers Phase**
+
+- Handles callbacks scheduled by:
+  - `setTimeout()`
+  - `setInterval()`
+- If the timer has expired, its callback is pushed to the **timer queue**.
+
+### 2. 📩 **Poll Phase**
+
+- Handles:
+  - I/O events (e.g., incoming network requests, file reads)
+  - Fetching data
+  - Waiting for new events
+- If no timers are ready, it will **block and wait** for callbacks.
+- Once events arrive, they are dequeued and executed.
+
+### 3. ⚡ **Check Phase**
+
+- Executes callbacks scheduled by:
+  - `setImmediate()`
+- This phase runs **after** the poll phase.
+
+### 4. 🔒 **Close Callbacks Phase**
+
+- Executes:
+  - `socket.on("close")`
+  - Any resource closing logic
+- Triggered when a handle/resource is closed.
+
+---
+
+## 🔂 Internal Queues (Between Phases)
+
+Even though the phases look sequential, **microtasks** can interrupt them:
+
+### 🔹 `process.nextTick()` Queue
+
+- Executes _after_ any current operation but _before_ the event loop continues.
+- **Higher priority than Promises**
+
+### 🔹 **Promise Callbacks / Microtasks**
+
+- `.then()`, `.catch()`, `.finally()` go here.
+- Executed immediately after the current operation and `nextTick()`.
+
+> 🔄 These microtasks are handled **after each phase**, before moving to the next.
+
+---
+
+## 📥 External APIs and System Calls
+
+The **Poll phase** interacts with:
+
+- Incoming client requests
+- Disk or network I/O
+- Internal modules: `fs`, `http`, `crypto`, etc.
+- External APIs or system layers (like the OS)
+
+---
+
+## 🧠 Callback Queues
+
+Each phase has a **queue** where its respective callbacks wait.
+
+- Once the phase is active, all queued callbacks are executed **sequentially**.
+- If the queue is empty, it moves to the next phase.
+
+---
+
+## 🔁 Loop Flow Summary
+
+```text
+       +--------+         +--------+
+       | Timers | ---->   |  Poll  | ----> I/O, fs, http, crypto
+       +--------+         +--------+
+            ↓                  ↓
+       +--------+         +--------+
+       | Check  | <----   | Close  |
+       +--------+         +--------+
+
+      ↻ Between every phase:
+        - process.nextTick()
+        - Promise microtasks
+```
