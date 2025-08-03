@@ -199,7 +199,7 @@ The loop has **six major phases**, shown as a cycle in the diagram:
 ### 2. 📩 **Poll Phase**
 
 - Handles:
-  - I/O events (e.g., incoming network requests, file reads)
+  - I/O events (e.g., incoming network requests[http], file reads[fs], crypto & almost all nodeJs module functions)
   - Fetching data
   - Waiting for new events
 - If no timers are ready, it will **block and wait** for callbacks.
@@ -286,3 +286,53 @@ Each phase has a **queue** where its respective callbacks wait.
 🧬 Microtasks Queue | process.nextTick, Promises
 
 ```
+
+⚠️⚠️⚠️ 👇 v. v. v. Important 👇 ⚠️⚠️⚠️
+
+### Real world Example for understanding internal LibUV
+
+```js
+// A
+https.get(
+  "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/global-shark-attack/records?limit=20&refine=date%3A%222023%2F08%22",
+  (res) => {
+    console.log("A : HTTP request called");
+  }
+);
+
+// B
+setImmediate(() => console.log("B : setImmediate called"));
+
+// C
+fs.readFile("./useMe.txt", "utf8", (err, data) => {
+  console.log("C : readfile called");
+});
+
+function multiplyFn(x, y) {
+  return "E : MultiplyFn called";
+}
+
+// D
+setTimeout(() => {
+  console.log("D : setTimeout called");
+}, 5000);
+
+// E
+console.log(multiplyFn(a, b));
+```
+
+here i've mentioned A,B,C,D,E for each js executable lines.
+
+--> first of all js engine will read line A & send it to LibUV, in libuv it will be stored in POLE phase's callback queue & will start it's work to get result...
+
+--> Then, line B will be read by js ngine & will also be sent to libuv, in libuv it will be stored in TIMER phase's callback queue & will start it's work to get result...
+
+--> Then same with line C, it will be also stored in POLE phase's callback queue
+
+--> But line D is just calling an normal function so it will be executed immediately by js engine & result will be printed .
+
+--> same with line E, it's result also will be printe immediately
+
+#######################################################
+-----------write how he results will be printed nd why , means according the libuv image, after which , which one should execute, explain in detail ---------good nyt :)
+########################################
