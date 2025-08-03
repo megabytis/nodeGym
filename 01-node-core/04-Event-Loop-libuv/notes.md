@@ -170,7 +170,7 @@ undefined            // if res?.secret doesn't exist in the response
 
 # 🌀 Node.js Event Loop - Detailed Explanation
 
-[event-loop](./event_loop.png)
+[event-loop](./event_loop.jpg)
 
 The Node.js **Event Loop** is the core mechanism that handles **asynchronous operations** like `setTimeout`, `I/O tasks`, and `Promises`. It allows Node.js to be **non-blocking** and single-threaded while still handling many operations concurrently.
 
@@ -234,7 +234,7 @@ Even though the phases look sequential, **microtasks** can interrupt them:
 - `.then()`, `.catch()`, `.finally()` go here.
 - Executed immediately after the current operation and `nextTick()`.
 
-> 🔄 These microtasks are handled **after each phase**, before moving to the next.
+> 🔄 These microtasks / collectively k.a. INTERNAL CYCLES are handled **after each phase** (mentioned in event_lopp image as blue cycles after each phase), before moving to the next.
 
 ---
 
