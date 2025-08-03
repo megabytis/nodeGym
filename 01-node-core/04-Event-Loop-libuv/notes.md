@@ -170,7 +170,7 @@ undefined            // if res?.secret doesn't exist in the response
 
 # 🌀 Node.js Event Loop - Detailed Explanation
 
-[event-loop](./event_loop.jpg)
+[event-loop](./event_loop.png)
 
 The Node.js **Event Loop** is the core mechanism that handles **asynchronous operations** like `setTimeout`, `I/O tasks`, and `Promises`. It allows Node.js to be **non-blocking** and single-threaded while still handling many operations concurrently.
 
