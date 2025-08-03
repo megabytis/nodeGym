@@ -144,7 +144,7 @@ Each of these are **executed one-by-one** in the Call Stack.
 
 ---
 
-## [🖼️ Image Reference](./nodeJs.png)
+## [🧠 (See: Node.js Internals diagram)](./nodeJs.png)
 
 - 🟦 V8: Handles `multiplyFn`, `console.log`, variable declarations
 - 🟪 libuv: Manages `setTimeout`, `https.get`, and `fs.readFile`
@@ -272,4 +272,17 @@ Each phase has a **queue** where its respective callbacks wait.
       ↻ Between every phase:
         - process.nextTick()
         - Promise microtasks
+```
+
+## overall SUMMARY
+
+```text
+🔁 Event Loop Phase | Callback Types Handled
+--------------------|-----------------------------
+⏲️ Timers           | setTimeout, setInterval
+📥 Poll             | fs.readFile, http.get
+⚡ Check            | setImmediate
+🔒 Close Callbacks  | socket.on("close")
+🧬 Microtasks Queue | process.nextTick, Promises
+
 ```
