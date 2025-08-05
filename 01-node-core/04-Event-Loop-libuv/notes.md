@@ -323,16 +323,58 @@ console.log(multiplyFn(a, b));
 
 here i've mentioned A,B,C,D,E for each js executable lines.
 
---> first of all js engine will read line A & send it to LibUV, in libuv it will be stored in POLE phase's callback queue & will start it's work to get result...
+🔍 Step-by-Step Execution Flow
 
---> Then, line B will be read by js ngine & will also be sent to libuv, in libuv it will be stored in TIMER phase's callback queue & will start it's work to get result...
+Phase 1: Initial Execution (Call Stack)
 
---> Then same with line C, it will be also stored in POLE phase's callback queue
+// 1. https.get() is called
+// - Creates HTTP request
+// - Registers callback (stored internally, NOT in callback queues yet)
+// - Request sent to network thread pool
 
---> But line D is just calling an normal function so it will be executed immediately by js engine & result will be printed .
+// 2. setImmediate() is called
+// - Callback queued to CHECK phase
+// - Added to setImmediate queue
 
---> same with line E, it's result also will be printe immediately
+// 3. fs.readFile() is called
+// - Request sent to thread pool
+// - Callback will be queued to POLL phase when complete
 
-#######################################################
------------write how he results will be printed nd why , means according the libuv image, after which , which one should execute, explain in detail ---------good nyt :)
-########################################
+// 4. setTimeout() is called
+// - Timer created with 5000ms delay
+// - Callback queued to TIMER phase (after 5 seconds)
+
+// 5. multiplyFn() called and result logged immediately
+console.log("E : MultiplyFn called"); // Executes FIRST!
+
+Phase 2: Event Loop Starts
+🔄 The LibUV Event Loop Phases
+
+```text
+  ┌───────────────────────────┐
+┌─┤        TIMERS             ├──┐    ← setTimeout, setInterval
+│ └───────────────────────────┘  │
+│ ┌───────────────────────────┐  │
+├─┤     PENDING CALLBACKS     ├──┤    ← I/O callbacks except close callbacks
+│ └───────────────────────────┘  │
+│ ┌───────────────────────────┐  │
+├─┤        IDLE, PREPARE      ├──┤    ← Internal use only
+│ └───────────────────────────┘  │
+│ ┌───────────────────────────┐  │
+├─┤         POLL              ├──┤ ← I/O callbacks, incoming connections
+│ └───────────────────────────┘  │
+│ ┌───────────────────────────┐  │
+├─┤        CHECK              ├──┤ ← setImmediate callbacks
+│ └───────────────────────────┘  │
+│ ┌───────────────────────────┐  │
+└─┤    CLOSE CALLBACKS        ├──┘    ← close events (socket.on('close'))
+  └───────────────────────────┘
+```
+
+📈 Expected Output Order
+
+E : MultiplyFn called // result logged immediately
+C : readfile called // File I/O usually faster
+A : HTTP request called // depends on Network speed (poll phase), if network would be slow then it's possible that it can executed very late also 😉
+B : setImmediate called // CHECK phase always after POLL
+D : setTimeout called // after 5 second complete of timer phase, can't say after which exactly it will be printed, will be printed when timer will complete that's it !!!!
