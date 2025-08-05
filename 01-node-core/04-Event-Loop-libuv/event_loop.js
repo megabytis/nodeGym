@@ -1,6 +1,6 @@
 "use strict";
 
-// // EXAMPLE - 1
+// EXAMPLE - 1
 const https = require("https");
 const fs = require("fs");
 
@@ -32,7 +32,7 @@ const fs = require("fs");
 //   console.log("D : setTimeout called");
 // }, 5000);
 
-// E
+// // E
 // console.log(multiplyFn(a, b));
 
 // RESULT :----------
@@ -46,34 +46,32 @@ A : HTTP request called
 
 // EXAMPLE - 2
 
-const a = 39;
+// // A
+// setImmediate(() => console.log("A: setImmediate called"));
 
-// A
-setImmediate(() => console.log("A: setImmediate called"));
+// // B
+// Promise.resolve().then(() => console.log("B: Promise called"));
 
-// B
-Promise.resolve().then(() => console.log("B: Promise called"));
+// // C
+// fs.readFile("./useMe.txt", "utf8", () => {
+//   console.log("C: readfile called");
+// });
 
-// C
-fs.readFile("./useMe.txt", "utf8", () => {
-  console.log("C: readfile called");
-});
+// // D
+// setTimeout(() => console.log("D: timer called"), 0);
 
-// D
-setTimeout(() => console.log("D: timer called"), 0);
+// // E
+// process.nextTick(() => console.log("E: nextTick called"));
 
-// E
-process.nextTick(() => console.log("E: nextTick called"));
+// function printA() {
+//   console.log("F: function called");
+// }
 
-function printA() {
-  console.log("F: function called");
-}
+// // F
+// printA();
 
-// F
-printA();
-
-// G
-console.log("G: normal line logged");
+// // G
+// console.log("G: normal line logged");
 
 // Expected Output
 /*
@@ -85,3 +83,40 @@ D: timer called
 C: readfile called
 A: setImmediate called
 */
+
+// EXAMPLE - 3
+
+setImmediate(() => console.log("1- setImmediate"));
+
+setTimeout(() => console.log("2- Timer expired"), 0);
+
+Promise.resolve().then(() => console.log("3- Promise"));
+
+fs.readFile("./file.txt", "utf8", () => {
+  setTimeout(() => console.log("4- 2nd timer"), 0);
+
+  process.nextTick(() => console.log("5- 2nd nextTick"));
+
+  setImmediate(() => console.log("6- 2nd setImmediate"));
+
+  console.log("7- File Reading CB");
+});
+
+process.nextTick(() => console.log("8- nextTick"));
+
+console.log("9- Last line of the file.");
+
+// Expected ouput :---
+/*
+9- Last line of the file.
+8- nextTick
+3- Promise
+2- Timer expired
+7- File Reading CB
+5- 2nd nextTick
+1- setImmediate
+6- 2nd setImmediate
+4- 2nd timer
+*/
+// this is an example of nested callback
+// here event-loop will iterate once, then inside readFile there are another callbacks, so, another event-loop iteration will happen

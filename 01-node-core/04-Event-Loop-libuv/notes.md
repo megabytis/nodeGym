@@ -381,3 +381,9 @@ C : readfile called // File I/O usually faster
 A : HTTP request called // depends on Network speed (poll phase), if network would be slow then it's possible that it can executed very late also 😉
 B : setImmediate called // CHECK phase always after POLL
 D : setTimeout called // after 5 second complete of timer phase, can't say after which exactly it will be printed, will be printed when timer will complete that's it !!!!
+
+⚠️⚠️⚠️ Imp Point ⚠️⚠️⚠️
+
+-> When eventLoop is IDLE i.e. it has nothing to do, it ALWAYS WAITs IN POLL PHASE, for any POLL event to occur
+
+-> So, eventLoop is an "Semi-Infinite loop", i.e. when it has nothing to do(i.e. no requests r coming), it waits in poll phase , then when any work comes(i.e. user requests something), it again starts working in eventLoop cycle, & goes on ......
