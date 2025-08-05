@@ -374,6 +374,9 @@ Phase 2: Event Loop Starts
 📈 Expected Output Order
 
 E : MultiplyFn called // result logged immediately
+
+after then callstack will be empty then responses from callback present on callback queue will start pushing to callstack........
+
 C : readfile called // File I/O usually faster
 A : HTTP request called // depends on Network speed (poll phase), if network would be slow then it's possible that it can executed very late also 😉
 B : setImmediate called // CHECK phase always after POLL
