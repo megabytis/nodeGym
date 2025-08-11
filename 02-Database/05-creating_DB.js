@@ -15,7 +15,7 @@ const url =
 const client = new md.MongoClient(url);
 
 // giving a name to our database
-const dbname = "myDataBase";
+const dbname = "Testing_DB";
 
 async function callMe() {
   await client.connect();
@@ -25,7 +25,42 @@ async function callMe() {
   const db = client.db(dbname);
 
   // Now i'll add documents/data to my database
-  const collection = db.collection("documents");
+  const collection = db.collection("data-1");
+
+  // Inserting a Document
+  const insertDoc = await collection.insertMany([
+    {
+      name: "Prachi Sucharita",
+      Age: 22,
+      College: "ITER, SOA, BBSR",
+      Course: "B.Tech CS",
+    },
+  ]);
+
+  // Finding all Documents
+  const findResult = await collection.find({}).toArray();
+  console.log("Document found :- \n", findResult);
+  JSON.stringify;
+
+  // Finding documents with Query Filter
+  const xyz = await collection.find({ Course: "BBA" }).toArray();
+  const filteredDocs = JSON.stringify(xyz, null, 2);
+  console.log(
+    `\nFound Documents filtered by { Course: "BBA" } : \n${filteredDocs}`
+  );
+
+  // Updating a Document
+  const updateDoc = await collection.updateOne(
+    {
+      Course: "BCA",
+    },
+    {
+      $set: {
+        nickName: "miku",
+        name: "Madhusudan Bhukta",
+      },
+    }
+  );
 
   return "everything's now ready";
 }
