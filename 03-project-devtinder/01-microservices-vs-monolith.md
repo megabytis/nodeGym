@@ -1,6 +1,6 @@
 # Microservices vs Monolithic Architecture
 
-## 1. Definition
+## 0. Definition
 
 - **Monolithic Architecture**:  
   A single unified codebase where all functionalities (UI, business logic, database access) are part of one large application.
