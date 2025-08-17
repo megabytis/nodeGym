@@ -24,7 +24,7 @@ app.delete("/secret", (req, res) => {
   res.send("Data deleted successfully");
 });
 
-app.get("/secret/gf/:gfName/:age/:college", (req, res) => {
+app.get("/user/:userID([a-zA-Z]\\d+)", (req, res) => {
   res.send(req.params);
 });
 
