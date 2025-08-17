@@ -3,17 +3,25 @@ const app = express();
 const port = 3292;
 
 // Request Handler
-app.use((req, res) => {
-  res.send("Hello, from local Server");
-});
-
 // Request handlers using route
-app.use("/Secret", (req, res) => {
-  res.send("U r on a Secret Server");
+// GET
+app.get("/secret", (req, res) => {
+  res.send({
+    name: "Madhusudan Bhukta",
+    age: 21,
+    college: "Utkal University",
+  });
 });
 
-app.use("/home", (req, res) => {
-  res.send("Welcome to HomePage");
+// POST
+app.post("/secret", (req, res) => {
+  // Here saving data to DB
+  res.send("Data saved successfully in the Server !");
+});
+
+// DELETE
+app.delete("/secret", (req, res) => {
+  res.send("Data deleted successfully");
 });
 
 // Server Listener
