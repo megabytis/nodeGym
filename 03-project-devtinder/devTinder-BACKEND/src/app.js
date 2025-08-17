@@ -24,5 +24,9 @@ app.delete("/secret", (req, res) => {
   res.send("Data deleted successfully");
 });
 
+app.get("/secret/gf/:gfName/:age/:college", (req, res) => {
+  res.send(req.params);
+});
+
 // Server Listener
 app.listen(port, () => console.log("Server is running ...."));
