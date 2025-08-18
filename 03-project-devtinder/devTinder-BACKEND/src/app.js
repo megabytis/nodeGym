@@ -24,9 +24,5 @@ app.delete("/secret", (req, res) => {
   res.send("Data deleted successfully");
 });
 
-app.get("/user/:userID([a-zA-Z]\\d+)", (req, res) => {
-  res.send(req.params);
-});
-
 // Server Listener
 app.listen(port, () => console.log("Server is running ...."));

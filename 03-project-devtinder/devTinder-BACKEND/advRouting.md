@@ -27,7 +27,16 @@ app.get("/ab?cd", (req, res) => {
 });
 ```
 
-2. This route path will match abcd, abbcd, abbbcd, and so on .
+2. This route path will match /abe and /abcde.
+
+```js
+app.get("/ab(cd)?e", (req, res) => {
+  // here 'cd' is Optional
+  res.send("ab(cd)?e");
+});
+```
+
+3. This route path will match abcd, abbcd, abbbcd, and so on .
 
 ```js
 app.get("/ab+cd", (req, res) => {
@@ -35,20 +44,11 @@ app.get("/ab+cd", (req, res) => {
 });
 ```
 
-3. This route path will match abcd, abxcd, abRANDOMcd, ab123cd, and so on.
+4. This route path will match abcd, abxcd, abRANDOMcd, ab123cd, and so on.
 
 ```js
 app.get("/ab*cd", (req, res) => {
   res.send("ab*cd");
-});
-```
-
-4. This route path will match /abe and /abcde.
-
-```js
-app.get("/ab(cd)?e", (req, res) => {
-  // here 'cd' is Optional
-  res.send("ab(cd)?e");
 });
 ```
 
