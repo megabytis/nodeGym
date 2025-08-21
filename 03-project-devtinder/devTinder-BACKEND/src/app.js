@@ -122,3 +122,20 @@ app.get("/profile/checkProfileStatus", (req, res, next) => {
   console.log("checking profile");
   res.send("see ur profile");
 });
+
+// Error Handling
+app.use("/", (err = true, req, res, next) => {
+  if (err) {
+    res.status(500).send("some unexpected error happened!");
+  }
+});
+
+// -----------OR----------------
+app.use("/error", (err, req, res, next) => {
+  try {
+    // all logic, like DB calls, getting user data etc....
+    throw new Error("asuih98hdoiJUIG");
+  } catch (err) {
+    res.status(500).send("Intrnal Server Error!");
+  }
+});
