@@ -1,4 +1,6 @@
 const express = require("express");
+const { adminAuth, userAuth } = require("./Middleware/Auth.js");
+
 const app = express();
 const port = 3292;
 
@@ -90,26 +92,12 @@ app.get("/dashboard", (req, res) => {
 
 // Multi-Used Middleware :--
 
-function checkAuth(req) {
-  return true;
-}
-
-const authentication = (req, res, next) => {
-  const isAuthenticated = checkAuth(req);
-  if (isAuthenticated) {
-    console.log("user has been authenticated.");
-    next();
-  } else {
-    res.status(401).send("User not authenticated");
-  }
-};
-
 // mw-1
-app.use("/admin", authentication); // for each /admin/* it will use this current middleware
+app.use("/admin", adminAuth); // for each /admin/* it will use this current middleware
 // mw-2
-app.use("/settings", authentication); // for each /settings/*
+app.use("/settings", userAuth); // for each /settings/*
 // mw-3
-app.use("/profile", authentication); // for each /profile/*
+app.use("/profile", userAuth); // for each /profile/*
 
 // route-handlers
 app.get("/admin/moneyTransfer", (req, res, next) => {
