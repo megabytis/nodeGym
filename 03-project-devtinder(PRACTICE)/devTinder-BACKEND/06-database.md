@@ -1,0 +1,2 @@
+- Now we'll create database using a nodeJS library 'MONGOOSE' instead of Raw mongoDB
+- mongoose sits on the top of mongoDB
