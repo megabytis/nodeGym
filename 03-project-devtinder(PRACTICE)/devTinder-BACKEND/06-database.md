@@ -18,6 +18,8 @@ const mongoose = require("mongoose");
 // 1. Connect
 await mongoose.connect("mongodb://localhost:27017/testDB");
 
+// here 'testDB' in last of the URL is database name which will created on mongoDB compass :)
+
 // 2. Schema (rules/shape of documents)
 const userSchema = new mongoose.Schema({
   name: String,
