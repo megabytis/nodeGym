@@ -15,3 +15,16 @@ app.use(err, req, res, next) {
 - in app.use() if we'll pass 4 param, then they'll be (err,req,res,next)
 
 -> if we'll pass 3 param like (err,req,res) here , err will behave like req, req will behave like res & res will behave like next 🤣
+
+## More Better Way
+
+    - create a global error handler Middleware, just before connecting to DB at the end
+
+```js
+app.use((err, re, res, next) => {
+  // console.log(err); // for debugging purpose
+  return res.status(err.statusCode || 500).send(`ERROR: ${err.message}`);
+});
+```
+
+    - then pass all catch errors of all req handler's to this error handler MiddleWare
