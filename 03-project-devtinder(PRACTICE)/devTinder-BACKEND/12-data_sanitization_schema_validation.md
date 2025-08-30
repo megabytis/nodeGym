@@ -1,3 +1,5 @@
+**NEVER TRUST req.body (i.e. user's request)** : so do these things 👇
+
 # Data Sanitization & Schema Validation
 
 ## 1. Data Sanitization
@@ -134,3 +136,7 @@
    **Tip** : You can add Validations or literally everything, think from a user's perception that what a user can insert in every field(like; in skills, age, email) & then then think about logics to handle all illegal/mis-inputs .
 
    - e.g. an attacker enteres thousands of data inside 'skills' array to our DB, so we can handle it manually like we'll give a condition that if the arra length exceeds 10 values then throw error like this . :)
+
+# **Validation using External Libraries**
+
+      - using "validator" [https://www.npmjs.com/package/validator]
