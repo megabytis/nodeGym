@@ -16,7 +16,7 @@
     - JWT is tied to that user (contains userId, etc.), but uniqueness comes from signing with a secret key(signature), That signature ensures no one can fake/change the token without knowing the secret + Payload(claims)
 
 ```json
-// Example Palyload(claims) :--
+// Example Payload(claims) :--
 {
   "id": "123",
   "email": "miku@example.com",
@@ -81,4 +81,95 @@
         v
 [Response sent back to client]
 
+```
+
+# Now Let's create JWT token & Cookie !
+
+    - first of all when in /login API email & finally password will match then we'll create a JWT token & insert the token to Cookie & then send the response back. 👇
+
+```js
+if (isPasswordSame) {
+  // if password is valid then ;
+
+  // STEP-1
+  // Create a JWT token
+
+  // syntax :-
+  // jwt.sign(payload(can be user email or user's DB _id), secretOrPrivateKey, [options, callback])
+
+  /* e.g.:
+    const token = jwt.sign(
+        { id: user._id, email: user.email }, // payload
+        process.env.JWT_SECRET,              // secret key
+        { expiresIn: "1h" }                  // options
+    );
+  */
+  const token = await jwt.sign({ _id: foundUserData._id }, "#MyDevT1nder----");
+
+  // STEP-2
+  // Add the token to Cookie & then send the response back
+
+  // syntax :-
+  // res.cookie(token_name, value, [options])
+
+  /* e.g. :
+    res.cookie("token", token, {
+        httpOnly: true,                  // can't be accessed by JS (secure)
+        secure: process.env.NODE_ENV === "production", // only on HTTPS in prod
+        sameSite: "strict",              // CSRF protection
+        maxAge: 1000 * 60 * 60           // 1 hour
+    });
+  */
+  res.cookie("token", token);
+
+  res.send("Login Successful!");
+}
+```
+
+    - Now cookie is sent to user's browser .
+    - Now whenever user will perform any other request to the same server, this cookie will again being validated.
+    - here is the code 👇
+
+```js
+app.get("/profile", async (req, res, next) => {
+  try {
+    // whatever cookie has been created & sent to user's browser, we'll collect that here
+    const cookies = req.cookies;
+
+    // then, extract the token from the cookie, that we have created,
+    const { token } = cookies;
+
+    if (!token) {
+      throw new Error("Token is not valid!");
+    }
+
+    // Now using that token & secretKey, we'll verify wheather it is Valid or not
+    // If valid then jwt.verify won't return BOOLEAN rather than it will return our Payload that we've given during creating jwt token.
+
+    // syntax :-
+    // jwt.verify(token, secretOrPublicKey, [options, callback])
+
+    const decodeToken = await jwt.verify(token, "#MyDevT1nder----");
+    const { _id } = decodeToken;
+
+    console.log(`User DB id is : ${_id}`);
+
+    const user = await UserModel.findById(_id);
+    if (!user) {
+      throw new Error("User not present!");
+    }
+
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+});
+```
+
+    - We can't console log that cookie, for that we'll need 'cookie-parser' an npm package & create a middleware using that cookiparser.
+    - like this 👇
+
+```js
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 ```
