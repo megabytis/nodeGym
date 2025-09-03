@@ -16,9 +16,20 @@
 const mongoose = require("mongoose");
 
 // 1. Connect
-await mongoose.connect("mongodb://localhost:27017/testDB");
+await mongoose.connect("connection_URL");
+
+// ⚠️ Important ⚠️
+// For day-to-day nowrmal use, better to use mongoDB localy,
+// for that use this connection URL :  "mongodb://localhost:27017/testDB" , nd paste this in compass to access the DB.
+// This will be connected very fast light speed :)
+
+// For Production use, use Real cloud mongoDB
+// mongo-compass connection string:- "mongodb+srv://devTinder-DB:<password>@devtinder.yzcimn0.mongodb.net/devTinder-DB"
+// paste this connection string in compass also to access it's DataBase.
+// This connection will take 20-30 section for connecting.(Slow 🦥)
 
 // here 'testDB' in last of the URL is database name which will created on mongoDB compass :)
+// we can give any name to database here!
 
 // 2. Schema (rules/shape of documents)
 const userSchema = new mongoose.Schema({
