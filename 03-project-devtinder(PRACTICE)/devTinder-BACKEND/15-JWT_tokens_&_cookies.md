@@ -104,7 +104,7 @@ if (isPasswordSame) {
         { expiresIn: "1h" }                  // options
     );
   */
-  const token = await jwt.sign({ _id: foundUserData._id }, "#MyDevT1nder----");
+  const token = await jwt.sign({ _id: foundUserData._id }, "#MyDevT1nder----"); // we can add expiry of the token here also, see Syntax for more info
 
   // STEP-2
   // Add the token to Cookie & then send the response back
@@ -121,6 +121,7 @@ if (isPasswordSame) {
     });
   */
   res.cookie("token", token);
+  // we can add many more options also here in cookie, refer to syntax
 
   res.send("Login Successful!");
 }
