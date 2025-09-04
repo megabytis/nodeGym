@@ -179,6 +179,7 @@ app.use(cookieParser());
 
     - Although, just writing as it is will also run smotthly, no problem. Still ;
     - Besides of creating token inside /login API (like; await jwt.sign({ _id: foundUserData._id }, "#MyDevT1nder----");), for Best Practices, create it as a "Schema Method", where we have written our Schema.
+    - It is called "OFF-Loading" anything from one place to another.
 
 ```js
 userSchema.methods.getJWT = async function () {
@@ -197,5 +198,6 @@ userSchema.methods.getJWT = async function () {
 ```js
 const token = await foundUserData.getJWT();
 ```
-
+    - like this, we can offload password validating stuff also from /login API section to Schema declaration page .
+    
     - That's it , Enjoy! 🥳
