@@ -174,3 +174,28 @@ app.get("/profile", async (req, res, next) => {
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 ```
+
+# Best Practices to Follow! :
+
+    - Although, just writing as it is will also run smotthly, no problem. Still ;
+    - Besides of creating token inside /login API (like; await jwt.sign({ _id: foundUserData._id }, "#MyDevT1nder----");), for Best Practices, create it as a "Schema Method", where we have written our Schema.
+
+```js
+userSchema.methods.getJWT = async function () {
+  const user = this;
+  const token = jwt.sign({ _id: user._id }, "#MyDevT1nder----", {
+    expiresIn: "10s",
+  });
+};
+```
+
+    - ⚠️ Important ⚠️ : don't write Arrow method for definign schema method, some problems might happen bcuz, of using 'this' keyword.
+    - here i have defined 'user' as 'this', cuz 'this' will refer to the Object which would be created using the Schema & will be stored as a Document inside DataBase.
+    - now a new method named 'getJWT' has been created under userSchema.
+    - now inside /login API i just have to call this method using the schema's Object.
+
+```js
+const token = await foundUserData.getJWT();
+```
+
+    - That's it , Enjoy! 🥳
