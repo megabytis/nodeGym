@@ -70,8 +70,8 @@ app.post("/login");
 
 ```js
 const router = express.Router();
-router.post("/login)
+router.post("/login")
 ```
 
 - There is no major difference between them, express is internally managing them.
-- So, fom now we'll use like router.get(), router.post() like this .....
+- So, fom now we'll use like router.get(), router.post() or whatever we'll give the router variable name, like this .....
