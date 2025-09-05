@@ -58,3 +58,20 @@
 - It makes very easier to manage all APIs, more readable, scalable, testable etc....
 - here i have renamed the API path-names also, like; from /sign-up to /auth/sign-up like this.....
 - Cuz for categorizing some APIs under separate express-routers, it's always better to give API path names according to that 😉
+
+- prviously inside app.js we're creating like;
+
+```js
+const app = express();
+app.post("/login");
+```
+
+- But now ;
+
+```js
+const router = express.Router();
+router.post("/login)
+```
+
+- There is no major difference between them, express is internally managing them.
+- So, fom now we'll use like router.get(), router.post() like this .....
