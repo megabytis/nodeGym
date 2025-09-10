@@ -19,7 +19,11 @@ connectionRequestSchema.pre("save", function (next) {
   if (this.fromUserID.equals(this.toUserID)) {
     throw new Error("Can't send request to self!");
   }
+  next();
 });
+
+// here Arrow function won't work
+// here at the end we have to pass it to next(), cuz it behaves like an Middleware !
 ```
 
     - But the 👆 method is completely OPTIONAL. it doesn't matter where u have written the logic, inside API or inside Schema.
