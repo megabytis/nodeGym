@@ -13,10 +13,8 @@
   - PATCH /profile/edit (to edit user's profile except password)
   - PATCH /profile/password (to edit user's password only)
 
-  - POST /request/send/interested/:userID
-  - POST /request/send/ignored/:userID
-  - POST /request/review/accepted/:requestID
-  - POST /request/review/rejected/:requestID
+  - POST /request/send/:status/:toUserID (status can be interested/ignored)
+  - POST /request/review/:status/:userID (status can be accepted/rejected)
 
   - GET /user/connections
   - GET /user/requests/recieved
@@ -44,16 +42,14 @@
 
 ## **requestRouter**
 
-- POST /request/send/interested/:userID
-- POST /request/send/ignored/:userID
-- POST /request/review/accepted/:requestID
-- POST /request/review/rejected/:requestID
+- POST /request/send/:status/:toUserID
+- POST /request/review/:status/:requestID
 
 ## **userRouter**
 
 - GET /user/connections
 - GET /user/requests/recieved
-- GET /user/feed
+- GET /user/feed (gets you the profiles of other user's)
 
 - It makes very easier to manage all APIs, more readable, scalable, testable etc....
 - here i have renamed the API path-names also, like; from /sign-up to /auth/sign-up like this.....
@@ -70,7 +66,7 @@ app.post("/login");
 
 ```js
 const router = express.Router();
-router.post("/login")
+router.post("/login");
 ```
 
 - There is no major difference between them, express is internally managing them.
