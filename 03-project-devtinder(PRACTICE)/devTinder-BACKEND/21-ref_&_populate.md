@@ -87,6 +87,13 @@ Output :
 
 // With "Populate()"
 // Fetch post WITH user data
+/*
+syntax : popultae("a","b",c....)
+
+here 
+a = current model's one field having another model's _Id, where in schema "ref" is being written
+b, c, .... = another model's / referenced model's fields, whom we wanna fetch
+*/
 const foundPost_with_populate = await Post.findById(post._id).populate(
   "author", // 👈 Tell Mongoose to replace 'author' with User data
   ["name", "email"]
