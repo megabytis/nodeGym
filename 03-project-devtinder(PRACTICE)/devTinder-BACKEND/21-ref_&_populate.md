@@ -1,3 +1,5 @@
+⚠️⚠️⚠️ V. V. Important : **ref** & **populate()** ⚠️⚠️⚠️
+
 # What is 'ref' in Mongoose?
 
     - In MongoDB, there's no concept of joins like in SQL databases. To relate documents from different collections, we store references (usually the _id) of one document inside another.
@@ -92,11 +94,15 @@ syntax : popultae("a","b",c....)
 
 here 
 a = current model's one field having another model's _Id, where in schema "ref" is being written
-b, c, .... = another model's / referenced model's fields, whom we wanna fetch
+b, c, .... = another model's / referenced model's fields, whom we wanna fetch. (OPTIONAL)
+- but if we don't pass b,c,.... it will give everything/every fields of target model/ referenced model, so better fetch some specific data.
+
 */
 const foundPost_with_populate = await Post.findById(post._id).populate(
   "author", // 👈 Tell Mongoose to replace 'author' with User data
-  ["name", "email"]
+  // ["name", "email"],
+  // or we can also pass like;
+  "name email"
 ); // populate only name and email
 
 /*
