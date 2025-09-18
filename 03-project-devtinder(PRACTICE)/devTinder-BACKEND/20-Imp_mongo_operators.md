@@ -41,3 +41,5 @@
     20. $size: Match array length
 
     21. $elemMatch: Match elements inside array with condition
+
+[Reference](https://www.mongodb.com/docs/manual/reference/mql/query-predicates/)
