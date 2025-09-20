@@ -15,8 +15,7 @@
 ## **requestRouter**
 
 - POST /request/send/:status/:toUserID (status can be either "interested" or "ignored")
-- POST /request/review/accepted/:requestID
-- POST /request/review/rejected/:requestID
+- POST /request/review/:status/:requestID (here status can be either "accepted" or "rejected")
 
 ## **userRouter**
 
