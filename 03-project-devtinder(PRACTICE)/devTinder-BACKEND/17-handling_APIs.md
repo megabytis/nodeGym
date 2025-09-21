@@ -11,7 +11,7 @@
 
   - GET /profile/view
   - PATCH /profile/edit (to edit user's profile except password)
-  - PATCH /profile/password (to edit user's password only)
+  - PATCH /profile/edit/password (to edit user's password only)
 
   - POST /request/send/:status/:toUserID (status can be interested/ignored)
   - POST /request/review/:status/:userID (status can be accepted/rejected)
