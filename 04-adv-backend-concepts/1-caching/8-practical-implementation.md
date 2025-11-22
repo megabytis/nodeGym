@@ -41,7 +41,6 @@ redis.on("connect", () => {
 });
 
 module.exports = { redis };
-
 ```
 
 That’s your connection done.
@@ -53,7 +52,44 @@ That’s your connection done.
 `/utils/cache.js`
 
 ```js
-const { redis } = require("../config/redisClient");
+const { redis } = require("./config/redisClient");
+
+// ###################################
+// 1. redis.set(key, value, [options])
+// ##################################
+// Purpose: Stores a key-value pair in Redis with optional expiration.
+// Syntax: await redis.set(key, value, "EX", ttl);
+
+/*
+Parameters:
+key (string): The identifier for your data
+value (string): The data to store (must be stringified if it's an object)
+"EX" (string): Sets expiration time in seconds
+ttl (number): Time To Live in seconds
+*/
+
+// Example usage
+// await redis.set("user:123", JSON.stringify({ name: "John", age: 30 }), "EX", 3600);
+
+// This creates:
+// Key: "user:123"
+// Value: '{"name":"John","age":30}' (stringified JSON)
+// Expires: After 3600 seconds (1 hour)
+
+/*
+Alternative expiration options:
+// EX - seconds
+await redis.set("key", "value", "EX", 60); // 60 seconds
+
+// PX - milliseconds  
+await redis.set("key", "value", "PX", 60000); // 60,000 ms = 60 seconds
+
+// NX - only set if key doesn't exist
+await redis.set("key", "value", "NX");
+
+// XX - only set if key already exists
+await redis.set("key", "value", "XX");
+*/
 
 const setCache = async (key, value, ttl = 3600) => {
   try {
@@ -62,6 +98,33 @@ const setCache = async (key, value, ttl = 3600) => {
     console.error("Error setting cache:", error);
   }
 };
+
+// #################
+// 1. redis.get(key)
+// #################
+// Purpose: Retrieves a value from Redis by key.
+// Syntax: await redis.get(key);
+
+// How it works:
+/*
+// If key exists
+const data = await redis.get("user:123");
+// Returns: '{"name":"John","age":30}' (string)
+
+// If key doesn't exist or expired
+const data = await redis.get("nonexistent");
+// Returns: null
+
+// You need to parse it back to object
+const user = JSON.parse(data); // { name: "John", age: 30 }
+*/
+
+/*
+Important:
+- Always returns a string or null
+- You need to manually parse JSON strings back to objects
+- Returns null if key doesn't exist or has expired
+*/
 
 const getCache = async (key) => {
   try {
@@ -73,6 +136,37 @@ const getCache = async (key) => {
   }
 };
 
+// #################
+// 3. redis.del(key)
+// #################
+// Purpose: Deletes one or more keys from Redis.
+
+// Syntax:
+/* 
+await redis.del(key);
+// or for multiple keys;
+await redis.del(key1, key2, key3);
+*/
+
+// How it works:
+/*
+// Delete single key
+await redis.del("user:123");
+// Returns: 1 (number of keys deleted)
+
+// Delete multiple keys
+await redis.del("user:123", "session:456", "cache:789");
+// Returns: 3 (number of keys deleted)
+
+// Try to delete non-existent key
+await redis.del("nonexistent");
+// Returns: 0 (no keys deleted)
+*/
+
+// Return value:
+// Returns the number of keys that were successfully deleted
+// Returns 0 if none of the specified keys existed
+
 const removeCache = async (key) => {
   try {
     await redis.del(key);
@@ -82,7 +176,6 @@ const removeCache = async (key) => {
 };
 
 module.exports = { setCache, getCache, removeCache };
-
 ```
 
 This gives you:
