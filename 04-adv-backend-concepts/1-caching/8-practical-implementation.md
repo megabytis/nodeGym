@@ -1,4 +1,4 @@
-# ✅ **STEP 1 — Install Redis + ioredis**
+# **STEP 1 — Install Redis + ioredis**
 
 Run this:
 
@@ -16,7 +16,7 @@ docker run -p 6379:6379 --name redis redis:latest
 
 ---
 
-# ✅ **STEP 2 — Create Redis Client (1 file only)**
+# **STEP 2 — Create Redis Client (1 file only)**
 
 `/config/redisClient.js`
 
@@ -47,7 +47,7 @@ That’s your connection done.
 
 ---
 
-# ✅ **STEP 3 — Create Cache Helper (3 functions only)**
+# **STEP 3 — Create Cache Helper (3 functions only)**
 
 `/utils/cache.js`
 
@@ -188,7 +188,7 @@ No more functions needed.
 
 ---
 
-# ✅ **STEP 4 — Add Caching to Product List Route**
+# **STEP 4 — Add Caching to Product List Route**
 
 Inside your product controller:
 
@@ -219,7 +219,7 @@ Boom — product list cached.
 
 ---
 
-# ✅ **STEP 5 — Add Caching to Product Detail Route**
+# **STEP 5 — Add Caching to Product Detail Route**
 
 ```js
 export const getProduct = async (req, res) => {
@@ -242,7 +242,7 @@ export const getProduct = async (req, res) => {
 
 ---
 
-# ✅ **STEP 6 — Add Caching to User Cart + Invalidation**
+# **STEP 6 — Add Caching to User Cart + Invalidation**
 
 ### 📌 GET Cart (cached)
 
@@ -278,7 +278,7 @@ await cache.del(`cart:${req.user._id}`);
 
 ---
 
-# ✅ **STEP 7 — Add Caching to Orders + Invalidation**
+# **STEP 7 — Add Caching to Orders + Invalidation**
 
 ### 📌 GET Orders (cached)
 
