@@ -21,14 +21,27 @@ docker run -p 6379:6379 --name redis redis:latest
 `/config/redisClient.js`
 
 ```js
-import Redis from "ioredis";
+const Redis = require("ioredis");
 
-const redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379");
+const redisConfig = {
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  username: process.env.REDIS_USERNAME,
+  password: process.env.REDIS_PASSWORD,
+};
 
-redis.on("connect", () => console.log("🔌 Redis connected"));
-redis.on("error", (err) => console.error("❌ Redis error:", err));
+const redis = new Redis(redisConfig);
 
-export default redis;
+redis.on("error", (err) => {
+  console.error("Redis connection error:", err);
+});
+
+redis.on("connect", () => {
+  console.log("Connected to Redis");
+});
+
+module.exports = { redis };
+
 ```
 
 That’s your connection done.
@@ -40,29 +53,43 @@ That’s your connection done.
 `/utils/cache.js`
 
 ```js
-import redis from "../config/redisClient.js";
+const { redis } = require("../config/redisClient");
 
-export const cache = {
-  async get(key) {
+const setCache = async (key, value, ttl = 3600) => {
+  try {
+    await redis.set(key, JSON.stringify(value), "EX", ttl);
+  } catch (error) {
+    console.error("Error setting cache:", error);
+  }
+};
+
+const getCache = async (key) => {
+  try {
     const data = await redis.get(key);
     return data ? JSON.parse(data) : null;
-  },
-
-  async set(key, value, ttlSeconds) {
-    await redis.set(key, JSON.stringify(value), "EX", ttlSeconds);
-  },
-
-  async del(key) {
-    await redis.del(key);
-  },
+  } catch (error) {
+    console.error("Error getting cache:", error);
+    return null;
+  }
 };
+
+const removeCache = async (key) => {
+  try {
+    await redis.del(key);
+  } catch (error) {
+    console.error("Error removing cache:", error);
+  }
+};
+
+module.exports = { setCache, getCache, removeCache };
+
 ```
 
 This gives you:
 
-- `cache.get()`
-- `cache.set()`
-- `cache.del()`
+- `getCache()`
+- `setCache()`
+- `removeCache()`
 
 No more functions needed.
 
@@ -79,7 +106,7 @@ export const getProducts = async (req, res) => {
   const limit = Number(req.query.limit) || 10;
   const key = `products:list:page=${page}:limit=${limit}`;
 
-  const cached = await cache.get(key);
+  const cached = await getCache(key);
   if (cached) {
     console.log("CACHE HIT:", key);
     return res.json(cached);
@@ -89,7 +116,7 @@ export const getProducts = async (req, res) => {
 
   const data = await Product.find().skip(skip).limit(limit).lean();
 
-  await cache.set(key, data, 60); // TTL 60s
+  await setCache(key, data, 60); // TTL 60s
 
   res.json(data);
 };
@@ -106,7 +133,7 @@ export const getProduct = async (req, res) => {
   const { id } = req.params;
   const key = `product:${id}`;
 
-  const cached = await cache.get(key);
+  const cached = await getCache(key);
   if (cached) {
     console.log("CACHE HIT:", key);
     return res.json(cached);
@@ -114,7 +141,7 @@ export const getProduct = async (req, res) => {
 
   const product = await Product.findById(id).lean();
 
-  await cache.set(key, product, 120); // TTL 2 mins
+  await setCache(key, product, 120); // TTL 2 mins
 
   res.json(product);
 };
@@ -131,7 +158,7 @@ export const getCart = async (req, res) => {
   const userId = req.user._id;
   const key = `cart:${userId}`;
 
-  const cached = await cache.get(key);
+  const cached = await getCache(key);
   if (cached) {
     console.log("CACHE HIT:", key);
     return res.json(cached);
@@ -142,7 +169,7 @@ export const getCart = async (req, res) => {
     .populate("cart.productId")
     .lean();
 
-  await cache.set(key, cart, 60);
+  await setCache(key, cart, 60);
 
   res.json(cart);
 };
@@ -167,7 +194,7 @@ export const getOrders = async (req, res) => {
   const userId = req.user._id;
   const key = `orders:${userId}`;
 
-  const cached = await cache.get(key);
+  const cached = await getCache(key);
   if (cached) {
     console.log("CACHE HIT:", key);
     return res.json(cached);
@@ -175,7 +202,7 @@ export const getOrders = async (req, res) => {
 
   const orders = await Order.find({ userId }).lean();
 
-  await cache.set(key, orders, 300); // 5 minutes
+  await setCache(key, orders, 300); // 5 minutes
 
   res.json(orders);
 };
@@ -184,7 +211,7 @@ export const getOrders = async (req, res) => {
 ### 📌 On order creation → delete key
 
 ```js
-await cache.del(`orders:${req.user._id}`);
+await removeCache(`orders:${req.user._id}`);
 ```
 
 ---
