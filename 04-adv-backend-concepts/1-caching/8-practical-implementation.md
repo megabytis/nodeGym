@@ -190,7 +190,12 @@ No more functions needed.
 
 # **STEP 4 — Add Caching to Product List Route**
 
-Inside your product controller:
+Logic :
+
+    - getCache(key) → if miss → fetch from DB → setCache(key, data, ttl)
+    - Use removeCache(key) immediately after updating DB.
+
+Inside product controller:
 
 ```js
 // GET /products?page=1&limit=10
@@ -311,7 +316,7 @@ await removeCache(`orders:${req.user._id}`);
 
 # 🚀 **HOW YOU TEST**
 
-Run your server → hit `/products` twice:
+Run server → hit `/products` twice:
 
 First call:
 
