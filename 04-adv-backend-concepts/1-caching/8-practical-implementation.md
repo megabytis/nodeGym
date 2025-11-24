@@ -314,26 +314,7 @@ await removeCache(`orders:${req.user._id}`);
 
 ---
 
-# 🚀 **HOW YOU TEST**
+# Thumb Rule
 
-Run server → hit `/products` twice:
-
-First call:
-
-```
-CACHE MISS
-```
-
-Second call:
-
-```
-CACHE HIT
-```
-
-Same for:
-
-- `/products/:id`
-- `/cart`
-- `/orders`
-
----
+GET routes → getCache + setCache
+POST / PATCH / PUT / DELETE routes → removeCache
