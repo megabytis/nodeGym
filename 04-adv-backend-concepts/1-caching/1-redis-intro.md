@@ -11,8 +11,6 @@
 - **Redis(Remote Dictionary Server)** is an in-memory key-value store (It stores data in pairs like a dictionary stores addresses for names).
 - Think of it as a **super-fast temporary notebook** that lives in RAM. You store frequently-read data there so your app doesn’t have to hit MongoDB & do slow database reads every single time.
 
-- Redis =
-
 ## Why Redis Exists
 
 - MongoDB (database)
