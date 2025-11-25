@@ -1,0 +1,6 @@
+- add CORS middleware in backend
+- host backend in Render
+- host frontend in Vercel
+- add backend render hosted link in frontend & frontend vercel hosted link in backend
+- use uptimerobot to ping backend link every 5 minutes
+- 
