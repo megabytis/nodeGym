@@ -1,0 +1,6 @@
+- add CORS middleware in backend
+- host backend in Render
+- host frontend in Vercel
+- add backend render hosted link in frontend & frontend vercel hosted link in backend
+- use uptimerobot to ping backend link every 5 minutes, so that render doesn't sleep & backend doesn't get disconnected from MongoDB
+- after all these add caching in backend .
