@@ -316,5 +316,8 @@ await removeCache(`orders:${req.user._id}`);
 
 # Thumb Rule
 
-GET routes → getCache + setCache
-POST / PATCH / PUT / DELETE routes → removeCache
+**for GET Route**
+create key → check cache (getCache(key)) → if hit return → else query DB → setCache(key, data, ttl) → return data
+
+**for POST / PATCH / PUT / DELETE routes**
+update DB → removeCache(key) → return response
