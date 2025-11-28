@@ -1,22 +1,70 @@
-**Purpose:** Enforce RBAC on specific routes.
+# Role Middleware Implementation
 
-**API design:**
+**Purpose:** Protect routes so only specific roles can access them.
 
-```js
-const authorize = (...roles) => (req, res, next) => { ... }
+---
+
+## 1. The Code
+
+Create `src/middlewares/roleMiddleware.js`:
+
+```javascript
+/**
+ * @param {...String} allowedRoles - Roles allowed to access the route
+ */
+const authorize = (...allowedRoles) => {
+  return (req, res, next) => {
+    // 1. Ensure user is authenticated first
+    if (!req.user || !req.user.role) {
+      return res.status(401).json({ error: "Unauthorized: User not identified" });
+    }
+
+    // 2. Check if user's role is in the allowed list
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        error: "Forbidden: You do not have permission to perform this action",
+      });
+    }
+
+    // 3. Access Granted
+    next();
+  };
+};
+
+module.exports = { authorize };
 ```
 
-**Behavior:**
+---
 
-1. Ensure `req.user` exists (use `authMiddleware` before this).
-2. If `req.user.role` is in allowed `roles` → `next()`.
-3. Otherwise → return 403 Forbidden.
+## 2. Usage
 
-**Examples:**
+Apply it **after** your authentication middleware.
 
-* `router.post('/admin/product', authMiddleware, authorize('admin'), adminController.createProduct)`
+```javascript
+const { userAuth } = require("./middlewares/authMiddleware");
+const { authorize } = require("./middlewares/roleMiddleware");
 
-**Notes:**
+// Only Admin can create products
+router.post(
+  "/products",
+  userAuth,            // 1. Identify User
+  authorize("admin"),  // 2. Check Role
+  createProduct        // 3. Execute Logic
+);
 
-* You can accept multiple roles: `authorize('admin','seller')`.
-* Log the attempt for security auditing.
+// Admin OR Seller can update inventory
+router.patch(
+  "/products/:id/stock",
+  userAuth,
+  authorize("admin", "seller"),
+  updateStock
+);
+```
+
+---
+
+## 3. Key Concepts
+
+*   **401 Unauthorized:** "I don't know who you are." (Missing/Invalid Token)
+*   **403 Forbidden:** "I know who you are, but you can't do this." (Wrong Role)
+*   **Order Matters:** Always run `userAuth` (authentication) before `authorize` (authorization).
