@@ -118,6 +118,7 @@ if (isPasswordSame) {
         secure: process.env.NODE_ENV === "production", // only on HTTPS in prod
         sameSite: "strict",              // CSRF protection
         maxAge: 1000 * 60 * 60           // 1 hour
+        partitioned: true, <- for mordern Chrome
     });
   */
   res.cookie("token", token);
@@ -198,6 +199,7 @@ userSchema.methods.getJWT = async function () {
 ```js
 const token = await foundUserData.getJWT();
 ```
+
     - like this, we can offload password validating stuff also from /login API section to Schema declaration page .
-    
+
     - That's it , Enjoy! 🥳
